@@ -1108,6 +1108,66 @@
       box-shadow: var(--shadow-md);
     }
 
+    .portfolio-link.is-unavailable {
+      cursor: pointer;
+    }
+
+    .project-notice {
+      position: fixed;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      z-index: 1100;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      max-width: min(360px, calc(100vw - 2rem));
+      padding: 0.9rem 1rem;
+      color: var(--text-primary);
+      background: var(--bg-card);
+      border-left: 3px solid var(--accent-secondary);
+      box-shadow: var(--shadow-lg);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(1rem);
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+    }
+
+    .project-notice.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .project-notice i {
+      color: var(--accent-secondary);
+    }
+
+    .project-notice p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
+    .project-notice-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.6rem;
+      height: 1.6rem;
+      margin-left: auto;
+      padding: 0;
+      color: var(--text-secondary);
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .project-notice-close:hover {
+      color: var(--accent-primary);
+    }
+
 
 
     /* ── Designs Gallery ─────────────────────────────────── */
@@ -1878,9 +1938,53 @@
             </div>
           </div>
         </div>
+
+        <div class="portfolio-card">
+          <div class="portfolio-image">
+            <img src="images/canvas-screen-mockup.jpg" alt="BotCircuit workflow builder" loading="lazy">
+          </div>
+          <div class="portfolio-content">
+            <div class="portfolio-info">
+              <h3 class="portfolio-title">BotCircuit</h3>
+              <span class="portfolio-subtitle">Product Design</span>
+            </div>
+            <div class="portfolio-links">
+              <a href="#" class="portfolio-link is-unavailable" data-project="BotCircuit" aria-label="View BotCircuit project">
+                <i class="fas fa-arrow-up-right-from-square"></i>
+                <span>View project</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="portfolio-card">
+          <div class="portfolio-image">
+            <img src="images/daily-mirror-redesign.jpg" alt="Daily Mirror online redesign" loading="lazy">
+          </div>
+          <div class="portfolio-content">
+            <div class="portfolio-info">
+              <h3 class="portfolio-title">Daily Mirror Online</h3>
+              <span class="portfolio-subtitle">Web Design</span>
+            </div>
+            <div class="portfolio-links">
+              <a href="#" class="portfolio-link is-unavailable" data-project="Daily Mirror Online" aria-label="View Daily Mirror Online project">
+                <i class="fas fa-arrow-up-right-from-square"></i>
+                <span>View project</span>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
+
+  <div class="project-notice" id="projectNotice" role="status" aria-live="polite" aria-hidden="true">
+    <i class="fas fa-circle-info" aria-hidden="true"></i>
+    <p id="projectNoticeMessage">This project link is being updated. Please check back soon.</p>
+    <button class="project-notice-close" type="button" aria-label="Close message">
+      <i class="fas fa-xmark" aria-hidden="true"></i>
+    </button>
+  </div>
 
   <footer>
     <div class="container">
@@ -1988,6 +2092,36 @@
     });
 
     document.getElementById('portfolio').after(document.getElementById('designs'));
+
+    // Keep placeholder project links on the page until their destinations are live.
+    const projectNotice = document.getElementById('projectNotice');
+    const projectNoticeMessage = document.getElementById('projectNoticeMessage');
+    const projectNoticeClose = projectNotice.querySelector('.project-notice-close');
+    let projectNoticeTimer;
+
+    function showProjectNotice(projectName) {
+      projectNoticeMessage.textContent = `${projectName}'s link is being updated. Please check back soon.`;
+      projectNotice.classList.add('is-visible');
+      projectNotice.setAttribute('aria-hidden', 'false');
+      clearTimeout(projectNoticeTimer);
+      projectNoticeTimer = setTimeout(() => {
+        projectNotice.classList.remove('is-visible');
+        projectNotice.setAttribute('aria-hidden', 'true');
+      }, 4500);
+    }
+
+    document.querySelectorAll('.portfolio-link.is-unavailable').forEach(link => {
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        showProjectNotice(link.dataset.project);
+      });
+    });
+
+    projectNoticeClose.addEventListener('click', () => {
+      clearTimeout(projectNoticeTimer);
+      projectNotice.classList.remove('is-visible');
+      projectNotice.setAttribute('aria-hidden', 'true');
+    });
 
     // Header scroll effect
     function updateHeader() {
