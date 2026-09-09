@@ -1112,6 +1112,141 @@
       cursor: pointer;
     }
 
+    .project-gallery-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.92);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.22s ease, visibility 0.22s ease;
+    }
+
+    .project-gallery-modal.is-visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .project-gallery-shell {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 1.25rem 3.5rem;
+    }
+
+    .project-gallery-stage {
+      position: relative;
+      width: min(100%, 1280px);
+      height: min(90vh, 800px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: transparent;
+    }
+
+    .project-gallery-image {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      transform: scale(1);
+      transition: transform 0.2s ease;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .project-gallery-controls {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: 3;
+    }
+
+    .project-gallery-button,
+    .project-gallery-close {
+      width: 2.8rem;
+      height: 2.8rem;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(0, 0, 0, 0.45);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .project-gallery-button:hover,
+    .project-gallery-close:hover {
+      transform: scale(1.06);
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .project-gallery-nav {
+      position: absolute;
+      inset: 50% 0 auto 0;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+      z-index: 3;
+      padding: 0 1rem;
+    }
+
+    .project-gallery-nav button {
+      pointer-events: auto;
+      width: 3rem;
+      height: 3rem;
+      border: none;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.45);
+      color: #ffffff;
+      font-size: 1.4rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .project-gallery-nav button:hover {
+      transform: scale(1.08);
+      background: rgba(0, 0, 0, 0.65);
+    }
+
+    .project-gallery-counter {
+      position: absolute;
+      left: 50%;
+      bottom: 1rem;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.9);
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      z-index: 3;
+    }
+
     .project-notice {
       position: fixed;
       right: 1.5rem;
@@ -1949,9 +2084,10 @@
               <span class="portfolio-subtitle">Product Design</span>
             </div>
             <div class="portfolio-links">
-              <a href="#" class="portfolio-link is-unavailable" data-project="BotCircuit" aria-label="View BotCircuit project">
-                <i class="fas fa-arrow-up-right-from-square"></i>
-                <span>View project</span>
+              <a href="https://www.figma.com/proto/gKZbLqJmAQBeGiowVJMR2u/Ind.-Projects?node-id=25-13&p=f&viewport=814%2C200%2C0.2&t=zmjKiGFG0HNIqZ5D-1&scaling=scale-down-width&content-scaling=fixed&page-id=25%3A11"
+                class="portfolio-link" target="_blank" aria-label="Open BotCircuit prototype">
+                <i class="fab fa-figma"></i>
+                <span>Prototype</span>
               </a>
             </div>
           </div>
@@ -1967,7 +2103,7 @@
               <span class="portfolio-subtitle">Web Design</span>
             </div>
             <div class="portfolio-links">
-              <a href="#" class="portfolio-link is-unavailable" data-project="Daily Mirror Online" aria-label="View Daily Mirror Online project">
+              <a href="#" class="portfolio-link" data-project="Daily Mirror Online" data-gallery-mode="daily-mirror" aria-label="View Daily Mirror Online project">
                 <i class="fas fa-arrow-up-right-from-square"></i>
                 <span>View project</span>
               </a>
@@ -1977,6 +2113,34 @@
       </div>
     </div>
   </section>
+
+  <div class="project-gallery-modal" id="projectGalleryModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Daily Mirror project gallery">
+    <div class="project-gallery-shell">
+      <div class="project-gallery-stage">
+        <img class="project-gallery-image" id="projectGalleryImage" src="images/Sports Article.jpg" alt="Sports article screen" />
+        <div class="project-gallery-controls">
+          <button class="project-gallery-button" type="button" id="projectGalleryZoomOut" aria-label="Zoom out">
+            <i class="fas fa-minus" aria-hidden="true"></i>
+          </button>
+          <button class="project-gallery-button" type="button" id="projectGalleryZoomIn" aria-label="Zoom in">
+            <i class="fas fa-plus" aria-hidden="true"></i>
+          </button>
+          <button class="project-gallery-close" type="button" id="projectGalleryClose" aria-label="Close gallery">
+            <i class="fas fa-xmark" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="project-gallery-nav">
+          <button type="button" id="projectGalleryPrev" aria-label="Previous screen">
+            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+          </button>
+          <button type="button" id="projectGalleryNext" aria-label="Next screen">
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="project-gallery-counter" id="projectGalleryCounter">1 / 2</div>
+      </div>
+    </div>
+  </div>
 
   <div class="project-notice" id="projectNotice" role="status" aria-live="polite" aria-hidden="true">
     <i class="fas fa-circle-info" aria-hidden="true"></i>
@@ -2109,6 +2273,106 @@
         projectNotice.setAttribute('aria-hidden', 'true');
       }, 4500);
     }
+
+    const projectGalleryModal = document.getElementById('projectGalleryModal');
+    const projectGalleryImage = document.getElementById('projectGalleryImage');
+    const projectGalleryClose = document.getElementById('projectGalleryClose');
+    const projectGalleryPrev = document.getElementById('projectGalleryPrev');
+    const projectGalleryNext = document.getElementById('projectGalleryNext');
+    const projectGalleryCounter = document.getElementById('projectGalleryCounter');
+    const projectGalleryZoomIn = document.getElementById('projectGalleryZoomIn');
+    const projectGalleryZoomOut = document.getElementById('projectGalleryZoomOut');
+    const dailyMirrorSlides = [
+      'images/Sports Article.jpg',
+      'images/Sports News.jpg'
+    ];
+    let projectGalleryIndex = 0;
+    let projectGalleryScale = 1;
+
+    function renderGallerySlide() {
+      projectGalleryImage.src = dailyMirrorSlides[projectGalleryIndex];
+      projectGalleryImage.alt = `Daily Mirror screen ${projectGalleryIndex + 1}`;
+      projectGalleryCounter.textContent = `${projectGalleryIndex + 1} / ${dailyMirrorSlides.length}`;
+      projectGalleryImage.style.transform = `scale(${projectGalleryScale})`;
+    }
+
+    function openProjectGallery() {
+      projectGalleryIndex = 0;
+      projectGalleryScale = 1;
+      renderGallerySlide();
+      projectGalleryModal.classList.add('is-visible');
+      projectGalleryModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeProjectGallery() {
+      projectGalleryModal.classList.remove('is-visible');
+      projectGalleryModal.setAttribute('aria-hidden', 'true');
+      projectGalleryScale = 1;
+      projectGalleryImage.style.transform = 'scale(1)';
+    }
+
+    document.querySelectorAll('.portfolio-link[data-gallery-mode="daily-mirror"]').forEach(link => {
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        openProjectGallery();
+      });
+    });
+
+    projectGalleryPrev.addEventListener('click', () => {
+      projectGalleryIndex = (projectGalleryIndex - 1 + dailyMirrorSlides.length) % dailyMirrorSlides.length;
+      projectGalleryScale = 1;
+      renderGallerySlide();
+    });
+
+    projectGalleryNext.addEventListener('click', () => {
+      projectGalleryIndex = (projectGalleryIndex + 1) % dailyMirrorSlides.length;
+      projectGalleryScale = 1;
+      renderGallerySlide();
+    });
+
+    projectGalleryZoomIn.addEventListener('click', () => {
+      projectGalleryScale = Math.min(projectGalleryScale + 0.2, 2.5);
+      projectGalleryImage.style.transform = `scale(${projectGalleryScale})`;
+    });
+
+    projectGalleryZoomOut.addEventListener('click', () => {
+      projectGalleryScale = Math.max(projectGalleryScale - 0.2, 1);
+      projectGalleryImage.style.transform = `scale(${projectGalleryScale})`;
+    });
+
+    projectGalleryImage.addEventListener('wheel', event => {
+      event.preventDefault();
+      if (event.deltaY < 0) {
+        projectGalleryScale = Math.min(projectGalleryScale + 0.1, 2.5);
+      } else {
+        projectGalleryScale = Math.max(projectGalleryScale - 0.1, 1);
+      }
+      projectGalleryImage.style.transform = `scale(${projectGalleryScale})`;
+    }, { passive: false });
+
+    projectGalleryClose.addEventListener('click', closeProjectGallery);
+
+    projectGalleryModal.addEventListener('click', event => {
+      if (event.target === projectGalleryModal) {
+        closeProjectGallery();
+      }
+    });
+
+    document.addEventListener('keydown', event => {
+      if (!projectGalleryModal.classList.contains('is-visible')) return;
+
+      if (event.key === 'Escape') {
+        closeProjectGallery();
+      } else if (event.key === 'ArrowRight') {
+        projectGalleryIndex = (projectGalleryIndex + 1) % dailyMirrorSlides.length;
+        projectGalleryScale = 1;
+        renderGallerySlide();
+      } else if (event.key === 'ArrowLeft') {
+        projectGalleryIndex = (projectGalleryIndex - 1 + dailyMirrorSlides.length) % dailyMirrorSlides.length;
+        projectGalleryScale = 1;
+        renderGallerySlide();
+      }
+    });
 
     document.querySelectorAll('.portfolio-link.is-unavailable').forEach(link => {
       link.addEventListener('click', event => {
