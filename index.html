@@ -1000,20 +1000,7 @@
     }
 
     .service-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--accent-gradient);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    }
-
-    .service-card:hover::before {
-      transform: scaleX(1);
+      display: none;
     }
 
     .service-card:hover {
@@ -1044,6 +1031,24 @@
       font-weight: 700;
       letter-spacing: -0.025em;
       margin-bottom: 0.75rem;
+      width: fit-content;
+      position: relative;
+    }
+
+    .service-title::after {
+      content: '';
+      display: block;
+      width: 2rem;
+      height: 2px;
+      margin-top: 0.55rem;
+      border-radius: 999px;
+      background: var(--accent-gradient);
+      transform-origin: left;
+      transition: width 0.3s ease;
+    }
+
+    .service-card:hover .service-title::after {
+      width: 3.5rem;
     }
 
     .service-description {
@@ -1636,6 +1641,32 @@
 
       .about-tabs-card {
         min-height: 0;
+      }
+
+      .about-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        gap: 0.4rem;
+        margin: 0 -0.35rem 1.5rem;
+        padding: 0.35rem;
+        border: 1px solid rgba(0, 43, 143, 0.13);
+        border-radius: 12px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .about-tabs::-webkit-scrollbar {
+        display: none;
+      }
+
+      [data-theme="dark"] .about-tabs {
+        border-color: rgba(161, 180, 211, 0.2);
+      }
+
+      .about-tab {
+        flex: 0 0 auto;
+        white-space: nowrap;
       }
 
       .about-card-actions {
