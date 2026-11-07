@@ -1234,6 +1234,7 @@
       position: relative;
       width: min(100%, 1280px);
       height: min(90vh, 800px);
+      height: min(90dvh, 800px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1242,10 +1243,8 @@
     }
 
     .project-gallery-image {
-      max-width: 100%;
-      max-height: 100%;
-      width: auto;
-      height: auto;
+      width: 100%;
+      height: 100%;
       object-fit: contain;
       display: block;
       transform: scale(1);
@@ -2240,6 +2239,27 @@
 
         <div class="portfolio-card">
           <div class="portfolio-image">
+            <img src="images/habitrack.png" alt="HabiTrack habit tracking mobile app" loading="lazy">
+          </div>
+          <div class="portfolio-content">
+            <div class="portfolio-info">
+              <h3 class="portfolio-title">HabiTrack</h3>
+              <span class="portfolio-subtitle">Mobile Application</span>
+            </div>
+            <div class="portfolio-links">
+              <a href="https://github.com/rvndu-perera/const-habit-tracker.git"
+                class="portfolio-link" target="_blank" rel="noopener noreferrer" aria-label="View HabiTrack on GitHub">
+                <svg class="portfolio-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 17 17 7M7 7h10v10"></path>
+                </svg>
+                <span>GitHub</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="portfolio-card">
+          <div class="portfolio-image">
             <img src="images/canvas-screen-mockup.jpg" alt="BotCircuit workflow builder" loading="lazy">
           </div>
           <div class="portfolio-content">
@@ -2294,6 +2314,27 @@
                   <path d="M7 17 17 7M7 7h10v10"></path>
                 </svg>
                 <span>View project</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="portfolio-card">
+          <div class="portfolio-image">
+            <img src="images/portfolio 1.jpeg" alt="Portfolio template displayed on a desktop monitor" loading="lazy">
+          </div>
+          <div class="portfolio-content">
+            <div class="portfolio-info">
+              <h3 class="portfolio-title">Portfolio Template</h3>
+              <span class="portfolio-subtitle">Web Design</span>
+            </div>
+            <div class="portfolio-links">
+              <a href="https://github.com/rvndu-perera/portfolio-template.git"
+                class="portfolio-link" target="_blank" rel="noopener noreferrer" aria-label="View Portfolio Template on GitHub">
+                <svg class="portfolio-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 17 17 7M7 7h10v10"></path>
+                </svg>
+                <span>GitHub</span>
               </a>
             </div>
           </div>
@@ -2430,8 +2471,12 @@
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
+        if (e.defaultPrevented) return;
+        const href = this.getAttribute('href');
+        if (!href || href === '#') return;
+
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const target = document.querySelector(href);
         if (target) {
           target.scrollIntoView({
             behavior: 'smooth',
