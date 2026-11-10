@@ -1701,9 +1701,9 @@
         overflow-y: hidden;
         gap: 0.4rem;
         margin: 0 -0.35rem 1.5rem;
-        padding: 0.35rem;
-        border: 1px solid rgba(0, 43, 143, 0.13);
-        border-radius: 12px;
+        padding: 0 0 0.4rem;
+        border: none;
+        border-radius: 0;
         scrollbar-width: none;
         -webkit-overflow-scrolling: touch;
       }
@@ -1712,13 +1712,47 @@
         display: none;
       }
 
-      [data-theme="dark"] .about-tabs {
-        border-color: rgba(161, 180, 211, 0.2);
-      }
-
       .about-tab {
+        position: relative;
         flex: 0 0 auto;
         white-space: nowrap;
+        padding: 0.7rem 0.55rem;
+        transition: color 0.25s ease;
+      }
+
+      .about-tab:hover,
+      .about-tab:focus-visible {
+        background: transparent;
+      }
+
+      .about-tab:focus-visible {
+        outline: 2px solid var(--accent-secondary);
+        outline-offset: 2px;
+      }
+
+      .about-tab[aria-selected="true"],
+      [data-theme="dark"] .about-tab[aria-selected="true"] {
+        background: transparent;
+        color: var(--accent-primary);
+      }
+
+      [data-theme="dark"] .about-tab[aria-selected="true"] {
+        color: var(--accent-secondary);
+      }
+
+      .about-tab[aria-selected="true"]::after {
+        position: absolute;
+        right: 0.55rem;
+        bottom: 0;
+        left: 0.55rem;
+        height: 2px;
+        border-radius: 2px;
+        background: var(--accent-primary);
+        content: "";
+      }
+
+      [data-theme="dark"] .about-tab[aria-selected="true"]::after {
+        background: var(--accent-secondary);
       }
 
       .about-card-actions {
@@ -1891,6 +1925,28 @@
       .hero-subtitle {
         font-size: 0.9rem;
         margin-bottom: 1.75rem;
+      }
+    }
+
+    @media (max-width: 768px) and (hover: none) {
+      :where(a, button, [role="button"], [role="tab"], .design-item) {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      :hover,
+      :active {
+        transform: none !important;
+      }
+
+      .design-item:hover img,
+      .design-item.touched img {
+        filter: grayscale(100%) brightness(0.92);
+        transform: none;
+      }
+
+      .design-item:hover .design-overlay,
+      .design-item.touched .design-overlay {
+        opacity: 0;
       }
     }
 
