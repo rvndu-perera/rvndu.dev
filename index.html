@@ -436,6 +436,7 @@
 
     /* Hero Section */
     .hero {
+      --hero-grid-line: rgba(7, 19, 41, 0.1);
       padding: 11rem 0;
       text-align: left;
       position: relative;
@@ -444,6 +445,16 @@
       display: flex;
       align-items: center;
       background-color: var(--bg-primary);
+      background-image:
+        linear-gradient(to right, var(--hero-grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--hero-grid-line) 1px, transparent 1px);
+      background-size: 20% 100%, 100% 33.333%;
+      background-position: center top;
+      background-repeat: repeat;
+    }
+
+    [data-theme="dark"] .hero {
+      --hero-grid-line: rgba(255, 255, 255, 0.1);
     }
 
     .hero .container {
@@ -1516,10 +1527,17 @@
       will-change: filter, transform;
     }
 
-    .design-item:hover img,
-    .design-item.touched img {
+    .design-item.touched img,
+    .design-item:focus-visible img {
       filter: grayscale(0%) brightness(1);
       transform: scale(1.035);
+    }
+
+    @media (hover: hover) {
+      .design-item:hover img {
+        filter: grayscale(0%) brightness(1);
+        transform: scale(1.035);
+      }
     }
 
     /* Overlay label */
@@ -1535,9 +1553,15 @@
       pointer-events: none;
     }
 
-    .design-item:hover .design-overlay,
-    .design-item.touched .design-overlay {
+    .design-item.touched .design-overlay,
+    .design-item:focus-visible .design-overlay {
       opacity: 1;
+    }
+
+    @media (hover: hover) {
+      .design-item:hover .design-overlay {
+        opacity: 1;
+      }
     }
 
     .design-overlay span {
@@ -1956,16 +1980,6 @@
         transform: none !important;
       }
 
-      .design-item:hover img,
-      .design-item.touched img {
-        filter: grayscale(100%) brightness(0.92);
-        transform: none;
-      }
-
-      .design-item:hover .design-overlay,
-      .design-item.touched .design-overlay {
-        opacity: 0;
-      }
     }
 
     /* Animations */
@@ -2861,15 +2875,11 @@
 
     // Touch support for designs gallery (mobile color-reveal on tap)
     document.querySelectorAll('.design-item').forEach(item => {
-      item.addEventListener('touchstart', () => {
-        item.classList.add('touched');
-      }, { passive: true });
-      item.addEventListener('touchend', () => {
-        setTimeout(() => item.classList.remove('touched'), 800);
-      }, { passive: true });
-      // Keyboard accessibility
-      item.addEventListener('focus', () => item.classList.add('touched'));
-      item.addEventListener('blur',  () => item.classList.remove('touched'));
+      if (window.matchMedia('(hover: none)').matches) {
+        item.addEventListener('click', () => {
+          item.classList.toggle('touched');
+        });
+      }
     });
 
     // updating year - footer section
