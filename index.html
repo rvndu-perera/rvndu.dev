@@ -29,9 +29,10 @@
       /* Brand Accents */
       --accent-primary: #002B8F;
       --accent-secondary: #3381DC;
-      --accent-gradient: linear-gradient(135deg, #002B8F 0%, #3381DC 100%);
-      --accent-gradient-hover: linear-gradient(135deg, #00216e 0%, #2b70c2 100%);
+      --accent-solid: #002B8F;
+      --accent-solid-hover: #00216e;
       --accent-soft: rgba(51, 129, 220, 0.08);
+      --tech-stack-border: rgba(7, 19, 41, 0.12);
       
       /* Theme Toggle */
       --toggle-bg: #e2ebf7;
@@ -65,9 +66,10 @@
       /* Brand Accents */
       --accent-primary: #3381DC;
       --accent-secondary: #5ba3f5;
-      --accent-gradient: linear-gradient(135deg, #002B8F 0%, #3381DC 100%);
-      --accent-gradient-hover: linear-gradient(135deg, #0036b3 0%, #4693f0 100%);
+      --accent-solid: #3381DC;
+      --accent-solid-hover: #4693f0;
       --accent-soft: rgba(51, 129, 220, 0.12);
+      --tech-stack-border: rgba(255, 255, 255, 0.16);
       
       /* Theme Toggle */
       --toggle-bg: #0d1a3a;
@@ -241,7 +243,7 @@
       left: 0;
       width: 0;
       height: 2px;
-      background: var(--accent-gradient);
+      background: var(--accent-solid);
       transition: width 0.3s ease;
     }
 
@@ -411,7 +413,7 @@
       left: 0;
       width: 100%;
       height: 4rem;
-      background: linear-gradient(to bottom, var(--bg-primary) 30%, transparent 100%);
+      background: var(--bg-primary);
       z-index: 900;
       /* Above content (1), below header (1000) */
       pointer-events: none;
@@ -419,18 +421,7 @@
 
     /* Dotted Background Fixed */
     .dotted-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      z-index: 0;
-      pointer-events: none;
-      background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
-      background-size: 30px 30px;
-      /* Adjust spacing as needed */
-      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%);
-      -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%);
+      display: none;
     }
 
     :root {
@@ -445,7 +436,6 @@
 
     /* Hero Section */
     .hero {
-      --hero-grid-line: rgba(7, 19, 41, 0.1);
       padding: 11rem 0;
       text-align: left;
       position: relative;
@@ -454,16 +444,6 @@
       display: flex;
       align-items: center;
       background-color: var(--bg-primary);
-      background-image:
-        linear-gradient(to right, var(--hero-grid-line) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--hero-grid-line) 1px, transparent 1px);
-      background-size: 20% 100%, 100% 33.333%;
-      background-position: center top;
-      background-repeat: repeat;
-    }
-
-    [data-theme="dark"] .hero {
-      --hero-grid-line: rgba(255, 255, 255, 0.1);
     }
 
     .hero .container {
@@ -585,7 +565,7 @@
     }
 
     .btn-primary {
-      background: var(--accent-gradient);
+      background: var(--accent-solid);
       color: #ffffff;
       box-shadow: var(--shadow-md);
       border: none;
@@ -593,7 +573,7 @@
 
     .btn-primary:hover {
       transform: translateY(-3px);
-      background: var(--accent-gradient-hover);
+      background: var(--accent-solid-hover);
       color: #ffffff;
       box-shadow: var(--shadow-xl);
     }
@@ -606,7 +586,7 @@
     }
 
     .btn-secondary:hover {
-      background: var(--accent-gradient);
+      background: var(--accent-solid);
       color: #ffffff;
       transform: translateY(-3px);
       box-shadow: var(--shadow-xl);
@@ -781,15 +761,11 @@
       flex-wrap: wrap;
       gap: 0.5rem;
       margin-bottom: 1.5rem;
-      border-bottom: 1px solid rgba(0, 43, 143, 0.09);
       padding-bottom: 0.75rem;
     }
 
-    [data-theme="dark"] .about-tabs {
-      border-bottom-color: rgba(51, 129, 220, 0.16);
-    }
-
     .about-tab {
+      position: relative;
       border: none;
       border-radius: 0;
       background: transparent;
@@ -799,24 +775,42 @@
       font-size: 0.82rem;
       font-weight: 700;
       padding: 0.7rem 0.85rem;
-      transition: background-color 0.25s ease, color 0.25s ease;
+      transition: color 0.25s ease;
     }
 
     .about-tab:hover,
     .about-tab:focus-visible {
-      background: var(--accent-soft);
       color: var(--accent-primary);
       outline: none;
     }
 
     .about-tab[aria-selected="true"] {
-      background: var(--accent-primary);
-      color: #ffffff;
+      color: var(--accent-primary);
     }
 
     [data-theme="dark"] .about-tab[aria-selected="true"] {
+      color: var(--accent-secondary);
+    }
+
+    .about-tab::after {
+      position: absolute;
+      right: 0.85rem;
+      bottom: 0;
+      left: 0.85rem;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--accent-primary);
+      content: "";
+      transform: scaleX(0);
+      transition: transform 0.25s ease;
+    }
+
+    .about-tab[aria-selected="true"]::after {
+      transform: scaleX(1);
+    }
+
+    [data-theme="dark"] .about-tab::after {
       background: var(--accent-secondary);
-      color: #071329;
     }
 
     .about-panel {
@@ -906,31 +900,54 @@
       grid-column: span 1;
     }
 
-    .tech-stack-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+    .tech-stack-marquee {
+      display: flex;
+      flex-direction: column;
       gap: 0.85rem;
+      overflow: hidden;
+    }
+
+    .tech-stack-row {
+      overflow: hidden;
+      mask-image: linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    }
+
+    .tech-stack-track {
+      display: flex;
+      width: max-content;
+      animation: tech-stack-scroll-left 32s linear infinite;
+    }
+
+    .tech-stack-row:nth-child(2) .tech-stack-track {
+      animation-name: tech-stack-scroll-right;
+      animation-duration: 36s;
+    }
+
+    .tech-stack-marquee:hover .tech-stack-track {
+      animation-play-state: paused;
+    }
+
+    .tech-stack-group {
+      display: flex;
+      flex: 0 0 auto;
+      width: max-content;
+      gap: 0.85rem;
+      padding-right: 0.85rem;
     }
 
     .tech-stack-tile {
       display: flex;
+      flex: 0 0 auto;
+      min-width: 172px;
       min-height: 76px;
       align-items: center;
-      gap: 0.8rem;
-      padding: 0.85rem 1rem;
-      border: none;
+      gap: 1rem;
+      /* padding: 0.85rem 1rem;
       border-radius: 12px;
-      background: var(--bg-primary);
-      box-shadow: var(--shadow-sm);
-      color: var(--text-secondary);
-      text-align: left;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
-    }
-
-    .tech-stack-tile:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      background: var(--bg-card); */
       color: var(--text-primary);
+      text-align: left;
     }
 
     .tech-stack-tile img {
@@ -941,6 +958,11 @@
       display: block;
       user-select: none;
       -webkit-user-drag: none;
+      filter: grayscale(1) contrast(1.5);
+    }
+
+    [data-theme="dark"] .tech-stack-tile img {
+      filter: grayscale(1) invert(1) contrast(1.5);
     }
 
     .tech-stack-tile span {
@@ -949,21 +971,55 @@
       line-height: 1.3;
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .tech-stack-tile {
-        transition: none;
+    @keyframes tech-stack-scroll-left {
+      from {
+        transform: translateX(0);
       }
 
-      .tech-stack-tile:hover {
-        transform: none;
+      to {
+        transform: translateX(-33.333333%);
+      }
+    }
+
+    @keyframes tech-stack-scroll-right {
+      from {
+        transform: translateX(-33.333333%);
+      }
+
+      to {
+        transform: translateX(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tech-stack-marquee,
+      .tech-stack-row {
+        overflow: visible;
+      }
+
+      .tech-stack-row {
+        mask-image: none;
+        -webkit-mask-image: none;
+      }
+
+      .tech-stack-track {
+        animation: none;
+        flex-direction: column;
+        width: auto;
+      }
+
+      .tech-stack-group {
+        flex-wrap: wrap;
+        width: auto;
+        padding-right: 0;
+      }
+
+      .tech-stack-group[aria-hidden="true"] {
+        display: none;
       }
     }
 
     [data-theme="dark"] .skill-icon-img.invert-dark {
-      filter: brightness(0) invert(1);
-    }
-
-    [data-theme="dark"] .tech-stack-tile img.invert-dark {
       filter: brightness(0) invert(1);
     }
 
@@ -975,7 +1031,7 @@
       grid-column: span 1;
     }
 
-    /* Research Paper button — border-only hover instead of gradient fill */
+    /* Research Paper button - border-only hover instead of filled state */
     #researchPaper {
       box-shadow: inset 0 0 0 0px var(--accent-primary), var(--shadow-sm);
       transition: box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
@@ -1070,7 +1126,7 @@
 
     .service-icon {
       font-size: 2.25rem;
-      background: var(--accent-gradient);
+      background: var(--accent-solid);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -1102,7 +1158,7 @@
       height: 2px;
       margin-top: 0.55rem;
       border-radius: 999px;
-      background: var(--accent-gradient);
+      background: var(--accent-solid);
       transform-origin: left;
       transition: width 0.3s ease;
     }
@@ -1231,7 +1287,7 @@
     }
 
     .portfolio-link:hover {
-      background: var(--accent-gradient);
+      background: var(--accent-solid);
       color: #ffffff;
       border-color: transparent;
       transform: translate(2px, -2px);
@@ -1473,7 +1529,7 @@
       display: flex;
       align-items: flex-end;
       padding: 1.25rem 1rem;
-      background: linear-gradient(to top, rgba(0,0,0,0.42) 0%, transparent 60%);
+      background: rgba(0, 0, 0, 0.42);
       opacity: 0;
       transition: opacity 0.4s ease;
       pointer-events: none;
@@ -1572,7 +1628,7 @@
     }
 
     .social-link:hover {
-      background: var(--accent-gradient);
+      background: var(--accent-solid);
       box-shadow: var(--shadow-md);
     }
 
@@ -1702,7 +1758,6 @@
         gap: 0.4rem;
         margin: 0 -0.35rem 1.5rem;
         padding: 0 0 0.4rem;
-        border: none;
         border-radius: 0;
         scrollbar-width: none;
         -webkit-overflow-scrolling: touch;
@@ -1713,16 +1768,9 @@
       }
 
       .about-tab {
-        position: relative;
         flex: 0 0 auto;
         white-space: nowrap;
         padding: 0.7rem 0.55rem;
-        transition: color 0.25s ease;
-      }
-
-      .about-tab:hover,
-      .about-tab:focus-visible {
-        background: transparent;
       }
 
       .about-tab:focus-visible {
@@ -1740,19 +1788,9 @@
         color: var(--accent-secondary);
       }
 
-      .about-tab[aria-selected="true"]::after {
-        position: absolute;
+      .about-tab::after {
         right: 0.55rem;
-        bottom: 0;
         left: 0.55rem;
-        height: 2px;
-        border-radius: 2px;
-        background: var(--accent-primary);
-        content: "";
-      }
-
-      [data-theme="dark"] .about-tab[aria-selected="true"]::after {
-        background: var(--accent-secondary);
       }
 
       .about-card-actions {
@@ -1825,12 +1863,8 @@
         padding: 4rem 0;
       }
 
-      .tech-stack-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.65rem;
-      }
-
       .tech-stack-tile {
+        min-width: 154px;
         min-height: 68px;
         gap: 0.6rem;
         padding: 0.7rem;
@@ -1853,22 +1887,6 @@
       .scroll-top-mask {
         height: 8rem;
         /* Increased mask height for mobile */
-      }
-    }
-
-    @media (max-width: 380px) {
-      .tech-stack-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Reduce dotted background density on smaller screens */
-    @media (max-width: 768px) {
-      .dotted-bg {
-        background-size: 45px 45px; /* fewer dots */
-        opacity: 0.5; /* make them less prominent */
-        mask-image: linear-gradient(to bottom, var(--bg-primary) 30%, transparent 100%);
-        -webkit-mask-image: linear-gradient(to bottom, var(--bg-primary) 30%, transparent 100%);
       }
     }
 
@@ -2125,46 +2143,53 @@
 
   <section id="tech-stack">
     <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Tech Stack</h2>
-        <p class="section-subtitle">Tools I use to design and build digital experiences.</p>
-      </div>
-      <div class="tech-stack-grid animate-on-scroll" role="list" aria-label="Technologies and creative tools">
-          <div class="tech-stack-tile" role="listitem">
-            <img src="images/stack/react-js-icon.png" alt="" loading="lazy">
-            <span>React</span>
+      <div class="tech-stack-marquee animate-on-scroll" role="region" aria-label="Technologies and creative tools">
+        <div class="tech-stack-row">
+          <div class="tech-stack-track">
+            <div class="tech-stack-group" role="list" aria-label="Development tools">
+              <div class="tech-stack-tile" role="listitem"><img src="images/stack/react-js-icon.png" alt="" loading="lazy"><span>React</span></div>
+              <div class="tech-stack-tile" role="listitem"><img src="images/stack/javascript-programming-language-icon.png" alt="" loading="lazy"><span>JavaScript</span></div>
+              <div class="tech-stack-tile" role="listitem"><img src="images/stack/expo-dev-icon.png" alt="" loading="lazy"><span>Expo</span></div>
+              <div class="tech-stack-tile" role="listitem"><img src="images/stack/figma-icon.png" alt="" loading="lazy"><span>Figma</span></div>
+              <div class="tech-stack-tile" role="listitem"><img src="images/stack/affinity-studio-icon.png" alt="" loading="lazy"><span>Affinity</span></div>
+            </div>
+            <div class="tech-stack-group" aria-hidden="true">
+              <div class="tech-stack-tile"><img src="images/stack/react-js-icon.png" alt=""><span>React</span></div>
+              <div class="tech-stack-tile"><img src="images/stack/javascript-programming-language-icon.png" alt=""><span>JavaScript</span></div>
+              <div class="tech-stack-tile"><img src="images/stack/expo-dev-icon.png" alt=""><span>Expo</span></div>
+              <div class="tech-stack-tile"><img src="images/stack/figma-icon.png" alt=""><span>Figma</span></div>
+              <div class="tech-stack-tile"><img src="images/stack/affinity-studio-icon.png" alt=""><span>Affinity</span></div>
+            </div>
+            <div class="tech-stack-group" aria-hidden="true">
+              <div class="tech-stack-tile"><img src="images/stack/react-js-icon.png" alt=""><span>React</span></div>
+              <div class="tech-stack-tile"><img src="images/stack/javascript-programming-language-icon.png" alt=""><span>JavaScript</span></div>
+              <div class="tech-stack-tile"><img src="images/stack/expo-dev-icon.png" alt=""><span>Expo</span></div>
+              <div class="tech-stack-tile"><img src="images/stack/figma-icon.png" alt=""><span>Figma</span></div>
+              <div class="tech-stack-tile"><img src="images/stack/affinity-studio-icon.png" alt=""><span>Affinity</span></div>
+            </div>
           </div>
-          <div class="tech-stack-tile" role="listitem">
-            <img src="images/stack/javascript-programming-language-icon.png" alt="" loading="lazy">
-            <span>JavaScript</span>
+        </div>
+        <div class="tech-stack-row">
+          <div class="tech-stack-track">
+            <div class="tech-stack-group" role="list" aria-label="Creative and AI tools">
+              <div class="tech-stack-tile" role="listitem"><img src="images/stack/canva-icon.png" alt="" loading="lazy"><span>Canva</span></div>
+              <div class="tech-stack-tile" role="listitem"><img src="images/stack/claude-code-icon.png" alt="" loading="lazy"><span>Claude</span></div>
+              <div class="tech-stack-tile" role="listitem"><img src="images/stack/google-antigravity-icon.png" alt="" loading="lazy"><span>Antigravity</span></div>
+              <div class="tech-stack-tile" role="listitem"><img src="images/stack/google-gemini-icon.png" alt="" loading="lazy"><span>Gemini</span></div>
+            </div>
+            <div class="tech-stack-group" aria-hidden="true">
+              <div class="tech-stack-tile"><img src="images/stack/canva-icon.png" alt=""><span>Canva</span></div>
+              <div class="tech-stack-tile"><img src="images/stack/claude-code-icon.png" alt=""><span>Claude</span></div>
+              <div class="tech-stack-tile"><img src="images/stack/google-antigravity-icon.png" alt=""><span>Antigravity</span></div>
+              <div class="tech-stack-tile"><img src="images/stack/google-gemini-icon.png" alt=""><span>Gemini</span></div>
+            </div>
+            <div class="tech-stack-group" aria-hidden="true">
+              <div class="tech-stack-tile"><img src="images/stack/canva-icon.png" alt=""><span>Canva</span></div>
+              <div class="tech-stack-tile"><img src="images/stack/claude-code-icon.png" alt=""><span>Claude</span></div>
+              <div class="tech-stack-tile"><img src="images/stack/google-antigravity-icon.png" alt=""><span>Antigravity</span></div>
+              <div class="tech-stack-tile"><img src="images/stack/google-gemini-icon.png" alt=""><span>Gemini</span></div>
+            </div>
           </div>
-          <div class="tech-stack-tile" role="listitem">
-            <img src="images/stack/expo-dev-icon.png" alt="" class="invert-dark" loading="lazy">
-            <span>Expo</span>
-          </div>
-          <div class="tech-stack-tile" role="listitem">
-            <img src="images/stack/figma-icon.png" alt="" loading="lazy">
-            <span>Figma</span>
-          </div>
-          <div class="tech-stack-tile" role="listitem">
-            <img src="images/stack/affinity-studio-icon.png" alt="" loading="lazy">
-            <span>Affinity</span>
-          </div>
-          <div class="tech-stack-tile" role="listitem">
-            <img src="images/stack/canva-icon.png" alt="" loading="lazy">
-            <span>Canva</span>
-          </div>
-          <div class="tech-stack-tile" role="listitem">
-            <img src="images/stack/claude-code-icon.png" alt="" loading="lazy">
-            <span>Claude Code</span>
-          </div>
-          <div class="tech-stack-tile" role="listitem">
-            <img src="images/stack/google-antigravity-icon.png" alt="" loading="lazy">
-            <span>Google Antigravity</span>
-          </div>
-          <div class="tech-stack-tile" role="listitem">
-            <img src="images/stack/google-gemini-icon.png" alt="" loading="lazy">
-            <span>Google Gemini</span>
         </div>
       </div>
     </div>
