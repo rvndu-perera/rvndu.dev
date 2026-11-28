@@ -427,9 +427,19 @@
       pointer-events: none;
     }
 
-    /* Dotted Background Fixed */
+    /* Grid background stays fixed while page content scrolls */
     .dotted-bg {
-      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-color: var(--bg-primary);
+      background-image:
+        linear-gradient(to right, var(--section-grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--section-grid-line) 1px, transparent 1px);
+      background-size: 20% 100%, 100% 33.333%;
+      background-position: center top;
+      background-repeat: repeat;
     }
 
     :root {
@@ -451,13 +461,8 @@
       min-height: 100vh;
       display: flex;
       align-items: center;
-      background-color: var(--bg-primary);
-      background-image:
-        linear-gradient(to right, var(--section-grid-line) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--section-grid-line) 1px, transparent 1px);
-      background-size: 20% 100%, 100% 33.333%;
-      background-position: center top;
-      background-repeat: repeat;
+      background: transparent;
+      z-index: 1;
     }
 
     .hero .container {
@@ -1567,7 +1572,7 @@
       width: 100%;
       height: auto;
       display: block;
-      filter: grayscale(100%) brightness(0.92);
+      filter: grayscale(100%);
       transform: scale(1);
       transition:
         filter 0.55s cubic-bezier(0.25, 1, 0.5, 1),
@@ -1577,48 +1582,20 @@
 
     .design-item.touched img,
     .design-item:focus-visible img {
-      filter: grayscale(0%) brightness(1);
+      filter: grayscale(0%);
       transform: scale(1.035);
     }
 
     @media (hover: hover) {
       .design-item:hover img {
-        filter: grayscale(0%) brightness(1);
+        filter: grayscale(0%);
         transform: scale(1.035);
       }
     }
 
-    /* Overlay label */
+    /* Labels stay in markup for a11y, but never cover the colour */
     .design-item .design-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: flex-end;
-      padding: 1.25rem 1rem;
-      background: rgba(0, 0, 0, 0.42);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      pointer-events: none;
-    }
-
-    .design-item.touched .design-overlay,
-    .design-item:focus-visible .design-overlay {
-      opacity: 1;
-    }
-
-    @media (hover: hover) {
-      .design-item:hover .design-overlay {
-        opacity: 1;
-      }
-    }
-
-    .design-overlay span {
-      color: #fff;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+      display: none;
     }
 
     @media (max-width: 768px) {
@@ -1760,8 +1737,7 @@
         text-align: left;
       }
 
-      .hero,
-      section:not(.hero) {
+      .dotted-bg {
         background-size: 25% 100%, 100% 33.333%;
       }
 
@@ -2051,23 +2027,10 @@
       animation: fadeInUp 0.6s ease forwards;
     }
 
-    /* Ensure content covers the fixed background */
     section:not(.hero) {
-      background-color: var(--bg-primary);
-      background-image:
-        linear-gradient(to right, var(--section-grid-line) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--section-grid-line) 1px, transparent 1px);
-      background-size: 20% 100%, 100% 33.333%;
-      background-position: center top;
-      background-repeat: repeat;
+      background: transparent;
       position: relative;
       z-index: 1;
-    }
-
-    @media (max-width: 768px) {
-      section:not(.hero) {
-        background-size: 25% 100%, 100% 33.333%;
-      }
     }
   </style>
 
